@@ -7,38 +7,39 @@ const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret_key";
 // Register user
 export const register = async (req, res) => {
   try {
-    const { userName, email, password } = req.body;
+    const { email } = req.params;
 
-    const existingUser = await usersModel.findOne({ email });
-    if (existingUser)
-      return res.status(400).json({ message: "Email already registered" });
+    if (!email || typeof email !== "string" || !email.includes("@")) {
+      return res.status(400).json({
+        success: false,
+        message: "Email Anda Tidak Valid.",
+      });
+    }
 
-    const salt = await bcryptjs.genSalt(10);
-    const hashedPassword = await bcryptjs.hash(password, salt);
+    const userData = await usersModel.findOne({ email });
 
-    const newUser = new usersModel({
-      userName,
-      email,
-      password: hashedPassword,
-    });
+    if (userData) {
+      res.status(200).json({
+        message: "Data pengguna sudah tersedia",
+        status: 200,
+        data: userData,
+      });
+    } else {
+      const user = new usersModel({ email });
+      await user.save();
 
-    await newUser.save();
-
-    const token = jwt.sign({ id: newUser._id }, JWT_SECRET, {
-      expiresIn: "7d",
-    });
-
-    res.status(201).json({
-      message: "register succesfull",
-      token,
-      user: {
-        id: newUser._id,
-        userName: newUser.userName,
-        email: newUser.email,
-      },
-    });
+      res.status(200).json({
+        message: "Berhasil menambahkan pengguna",
+        status: 200,
+        data: user,
+      });
+    }
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({
+      message: "Internal Server Error: Gagal menambahkan pengguna",
+      status: 500,
+      error: error.message,
+    });
   }
 };
 
@@ -67,5 +68,21 @@ export const login = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export const getUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await usersModel.findById({ userId });
+
+    if (!user) {
+      return res.status(400).json({ message: "User tidak ditemukan" });
+    }
+    return res
+      .status(200)
+      .json({ message: "User ditemukan", status: 200, data: user });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
 };

@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { configDotenv } from "dotenv";
 import userRouter from "./routes/userRoute.js";
+import reminderRouter from "./routes/reminderRoute.js";
 
 configDotenv();
 
@@ -23,6 +24,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", userRouter);
+app.use("/reminder", reminderRouter);
 
 app.listen(PORT, () => console.log(`Server started in port: ${PORT}`));
 

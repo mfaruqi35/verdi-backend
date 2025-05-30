@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 const userSchema = mongoose.Schema({
   userName: {
     type: String,
-    required: true,
   },
   email: {
     type: String,
@@ -11,12 +10,10 @@ const userSchema = mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
   },
   totalPoin: {
     type: Number,
     default: 0,
-    required: true,
   },
   level: {
     type: Number,
