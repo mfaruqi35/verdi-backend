@@ -4,9 +4,20 @@ export const addReminder = async (req, res) => {
   try {
     const { email } = req.params;
     const { reminderTitle, timeReminder } = req.body;
+    const [hours, minutes] = timeReminder.split(":").map(Number);
+    const now = new Date();
+    const convertedTime = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      hours,
+      minutes,
+      0,
+      0
+    );
     const reminder = new reminderModel({
       reminderTitle,
-      timeReminder,
+      timeReminder: convertedTime,
       email,
     });
     reminder.save();
