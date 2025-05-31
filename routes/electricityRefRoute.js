@@ -1,8 +1,8 @@
-// import express from "express";
-// import { addReference } from "../controllers/electricityRefController.js";
+import express from "express";
+import { addReference } from "../controllers/electricityRefController.js";
 
-// const refRouter = express.Router();
+const refRouter = express.Router();
 
-// refRouter.post("/addRef", addReference);
+refRouter.post("/addRef", addReference);
 
-// export default refRouter;
+export default refRouter;
