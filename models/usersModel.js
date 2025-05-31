@@ -23,6 +23,10 @@ const userSchema = mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  difficulty: {
+    type: String,
+    enum: ["easy", "active", "strict"],
+  },
 });
 
 export default mongoose.model("User", userSchema);
