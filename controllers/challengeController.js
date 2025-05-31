@@ -29,3 +29,19 @@ export const getChallenge = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const pickChallenge = async (req, res) => {
+  try {
+    const { email } = req.params;
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getMyChallenge = async (req, res) => {
+  try {
+    const { email } = req.params;
+  } catch (error) {
+    res.status(500).json({ message: error.mmessage });
+  }
+};
